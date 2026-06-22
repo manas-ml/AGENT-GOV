@@ -1,0 +1,69 @@
+version: "1.0"
+name: demo-agent-policy
+description: Governance policy for the demo agent — allows safe tools, blocks dangerous ones
+
+rules:
+  # Block shell execution (highest priority)
+  - name: block_shell
+    condition:
+      field: tool_name
+      operator: eq
+      value: run_shell
+    action: block
+    priority: 100
+    message: Shell execution is blocked by governance policy
+
+  # Block any code execution
+  - name: block_execute_code
+    condition:
+      field: tool_name
+      operator: eq
+      value: execute_code
+    action: block
+    priority: 99
+    message: Code execution is blocked by governance policy
+
+  # Deny if token usage is too high
+  - name: token_limit
+    condition:
+      field: token_count
+      operator: gt
+      value: 4096
+    action: deny
+    priority: 90
+    message: Token count exceeds the 4096 limit
+
+  # Allow the two safe tools
+  - name: allow_web_search
+    condition:
+      field: tool_name
+      operator: eq
+      value: web_search
+    action: allow
+    priority: 70
+    message: web_search is an approved tool
+
+  - name: allow_read_file
+    condition:
+      field: tool_name
+      operator: eq
+      value: read_file
+    action: allow
+    priority: 70
+    message: read_file is an approved tool
+
+  # Audit everything else that gets through
+  - name: audit_all
+    condition:
+      field: tool_name
+      operator: ne
+      value: ""
+    action: audit
+    priority: 10
+    message: Auditing tool call for compliance
+
+defaults:
+  action: allow
+  max_tokens: 4096
+  max_tool_calls: 10
+  confidence_threshold: 0.8
