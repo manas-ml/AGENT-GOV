@@ -123,3 +123,21 @@ Test cases are stratified across:
 - **attack_surface** — 10 levels (policy blocks, 6 injection types, memory poisoning, benign)
 - **tool** — `web_search`, `read_file`, `run_shell`
 - **evasion_technique** — none, obfuscated, encoded, fragmented
+
+## Build history
+
+This project was built incrementally in a single Claude Code session, in this prompt order:
+
+1. `create a virtual env and activate it`
+2. `Build a sample agent with couple of tool calls to demostrate the policy engine at https://github.com/microsoft/agent-governance-toolkit/blob/main/docs/tutorials/01-policy-engine.md`
+3. `how to run this`
+4. `build a similar agent but using strands python sdk . Build agent called strands_agent.py and apply similar policies on that agent.`
+5. `implement prompt injection detection for @strands_agent.py using techniques here https://github.com/microsoft/agent-governance-toolkit/blob/main/docs/tutorials/09-prompt-injection-detection.md`
+6. `how to run tests?`
+7. `based on option B here https://github.com/responsibleai/ASSERT/blob/main/docs/guides/create-evaluation.md create a YAML file to implement a ASSERT framework. Here are the concepts https://github.com/responsibleai/ASSERT/blob/main/docs/concepts.md`
+8. `switch the model in yaml to sonnet4.6`
+9. `how to run`
+10. `add README.md file to project`
+11. `push the code to https://github.com/manas-ml/AGENT-GOV`
+
+Sequence: venv setup → `demo_agent.py` (Microsoft policy engine tutorial) → `strands_agent.py` (Strands SDK port with the same policies) → prompt-injection detection layered onto `strands_agent.py` → pytest suite → `eval_config.yaml` (ASSERT framework, option B) → README → pushed to GitHub.
